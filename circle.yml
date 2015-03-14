@@ -17,10 +17,6 @@ general:
     - ./web/web.tar.gz
 
 deployment:
-  #production:
-  #  branch: production
-  #  commands:
-  #    - ./deploy_prod.sh
   production:
     branch: master
     commands:
