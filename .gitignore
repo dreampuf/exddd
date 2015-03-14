@@ -6,6 +6,15 @@
 # Folders
 _obj
 _test
+web/src/gopkg.in
+web/src/github.com
+web/src/code.google.com
+web/src/web/public/node_modules
+web/src/web/public/noteton.key
+web/src/web/public/noteton.pem
+web/web.iml
+web/.idea
+web/bin
 
 # Architecture specific extensions/prefixes
 *.[568vq]
