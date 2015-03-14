@@ -6,5 +6,5 @@ machine:
 
 dependencies:
   pre:
-    - docker run --rm -it -v "$PWD":/usr/src/myapp -e GOPATH=/usr/src/myapp/web -w /usr/src/myapp/web \
-                                   golang:latest bash -c "go get github.com/revel/revel && go get github.com/revel/cmd/revel && go get github.com/jinzhu/gorm && ./bin/revel package web"
+    - docker run --rm -it -v "$PWD":/usr/src/myapp -e GOPATH=/usr/src/myapp/web -w /usr/src/myapp/web
+      golang:latest bash -c "go get github.com/revel/revel && go get github.com/revel/cmd/revel && go get github.com/jinzhu/gorm && ./bin/revel package web"
