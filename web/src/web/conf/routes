@@ -1,0 +1,22 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+module:testrunner
+
+GET     /                                       App.Index
+POST    /                                       App.SavePost
+GET     /connect/weibo                          Connect.Weibo
+POST    /post/new                               Post.New
+GET     /post/new                               Post.PreNew
+GET     /post/:id                               Post.View
+
+# Ignore favicon requests
+GET     /favicon.ico                            404
+
+# Map static resources from the /app/public folder to the /public path
+GET     /public/*filepath                       Static.Serve("public")
+GET     /wb_f657f18c704e2782.txt                Static.Serve("public/wb_f657f18c704e2782.txt")
+
+# Catch all
+*       /:controller/:action                    :controller.:action

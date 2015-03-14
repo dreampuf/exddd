@@ -1,0 +1,13 @@
+machine:
+  environment:
+    NOTETON_ENV: dev
+  services:
+    - docker
+
+checkout:
+  post:
+    - pip install -r app/requirements.txt --use-mirrors
+
+test:
+  override:
+    - cd app && python tests.py

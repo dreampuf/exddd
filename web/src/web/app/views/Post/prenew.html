@@ -1,0 +1,30 @@
+{{set . "title" "Home"}}
+{{template "header.html" .}}
+
+<header class="hero-unit" style="background-color:#A9F16C">
+  <div class="container">
+    <div class="row">
+      <div class="hero-text">
+        <span> <h1> {{ msg . "site.name" }} </h1> {{ msg . "site.slogan" }}</span>
+        <a href="/post/new">{{ msg . "post.new" }}</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+  <div>
+    <form action="/" method="POST">
+      <input type="text" name="name" placeholder="Name"  value="ABC"/>
+      <textarea name="content" placeholder="吐槽TA!">BCCHCH</textarea>
+      <input type="submit">
+    </form>
+  </div>
+  <div class="row">
+    <div class="span6">
+      {{template "flash.html" .}}
+    </div>
+  </div>
+</div>
+
+{{template "footer.html" .}}
