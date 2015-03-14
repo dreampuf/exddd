@@ -15,6 +15,9 @@ web/src/web/public/noteton.pem
 web/web.iml
 web/.idea
 web/bin
+system_config/*id_rsa
+system_config/*id_rsa.pub
+web/web.tar.gz
 
 # Architecture specific extensions/prefixes
 *.[568vq]

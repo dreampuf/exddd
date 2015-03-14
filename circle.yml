@@ -13,3 +13,13 @@ general:
   artifacts:
     - ./web/web.tar.gz
 
+deployment:
+  #production:
+  #  branch: production
+  #  commands:
+  #    - ./deploy_prod.sh
+  production:
+    branch: master
+    commands:
+      - ./system_config/deploy_production.sh
+
