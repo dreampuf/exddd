@@ -5,6 +5,12 @@ machine:
     - docker
 
 dependencies:
+  cache_directories:
+    - web/src/code.google.com
+    - web/src/github.com
+    - web/src/gopkg.in
+    - web/bin
+    - web/pkg
   override:
     - docker run -it -v "$PWD":/usr/src/myapp -e GOPATH=/usr/src/myapp/web -w /usr/src/myapp/web golang:latest bash -c "go get github.com/revel/revel && go get github.com/revel/cmd/revel && go get github.com/jinzhu/gorm && ./bin/revel package web"
 
