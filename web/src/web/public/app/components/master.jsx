@@ -17,13 +17,6 @@ var Master = React.createClass({
       this.isActive('get-started') ? 'Get Started' :
       this.isActive('css-framework') ? 'Css Framework' :
       this.isActive('components') ? 'Components' : '';
-    var githubButton = (
-      <IconButton
-        className="github-icon-button"
-        iconClassName="muidocs-icon-custom-github"
-        href="https://github.com/callemall/material-ui"
-        linkButton={true} />
-    );
 
     return (
       <AppCanvas predefinedLayout={1}>
@@ -33,17 +26,23 @@ var Master = React.createClass({
           onMenuIconButtonTouchTap={this._onMenuIconButtonTouchTap}
           title={title}
           zDepth={0}>
-          {githubButton}
-        </AppBar>
 
+          <IconButton
+            className="weibo-icon-button"
+            iconClassName="icon-weibo"
+            href="/connect/weibo"
+            linkButton={true}
+            tooltip="Weibo Sign In"/>
+        </AppBar>
 
         <RouteHandler />
 
         <div className="footer full-width-section mui-dark-theme">
           <p>
-            专灭善男信女 Yeah哈哈哈，直接刷新
+            placehost<br />
+            nini<br />
+            ninini<br />
           </p>
-          {githubButton}
         </div>
 
       </AppCanvas>
@@ -51,7 +50,7 @@ var Master = React.createClass({
   },
 
   _onMenuIconButtonTouchTap: function() {
-    this.refs.leftNav.toggle();
+    //this.refs.leftNav.toggle();
   }
 
 });

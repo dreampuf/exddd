@@ -1,12 +1,13 @@
 machine:
   environment:
     NOTETON_ENV: dev
+    DEPENDENCE_PACKAGE: "github.com/revel/revel\ngithub.com/revel/cmd/revel\ngo get github.com/jinzhu/gorm\ngolang.org/x/oauth2\ngithub.com/Pallinder/go-randomdata"
   services:
     - docker
 
 dependencies:
   override:
-    - docker run -it -v "$PWD":/usr/src/myapp -e GOPATH=/usr/src/myapp/web -w /usr/src/myapp/web golang:latest bash -c "go get github.com/revel/revel && go get github.com/revel/cmd/revel && go get github.com/jinzhu/gorm && ./bin/revel package web"
+    - docker run -it -v "$PWD":/usr/src/myapp -e GOPATH=/usr/src/myapp/web -w /usr/src/myapp/web golang:latest bash -c "for i in `echo -e $DEPENDENCE_PACKAGE`; do go get $i; done && ./bin/revel package web"
 
 test:
   override:

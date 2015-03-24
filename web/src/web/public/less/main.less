@@ -1,3 +1,5 @@
+@import "font-style.css";
+
 /* material-ui */
 @import "node_modules/material-ui/src/less/scaffolding.less";
 
@@ -6,12 +8,39 @@
 
 @import "node_modules/material-ui/src/less/components.less";
 
+
 body {
   font-family: "Tahoma", "Arial", "Helvetica", "Microsoft YaHei New",
               "Microsoft Yahei", "微软雅黑", "宋体", "SimSun", "STXihei", "华文细黑", "sans-serif";
+}
+
+.weibo-icon-button {
+  float: right;
 }
 
 .example-page {
   text-align: center;
   padding-top: 200px;
 }
+
+.footer {
+
+  background-color: @grey-900;
+  text-align: center;
+
+  a {
+    .mui-text-dark-white;
+  }
+
+  p {
+    margin: 0 auto;
+    padding: 0;
+    .mui-text-light-white;
+    max-width: 335px;
+  }
+
+  .mui-icon-button {
+    color: @dark-white;
+  }
+}
+

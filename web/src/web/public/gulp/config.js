@@ -38,7 +38,9 @@ module.exports = {
       outputName: 'app.js'
     }],
     watch: [
-      "./app/**"
+      "./app/*",
+      "./app/components/*",
+      "./app/components/pages/*",
     ]
   }
 };

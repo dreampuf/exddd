@@ -11,8 +11,8 @@ var Home = React.createClass({
     return (
       <div className="example-page">
 
-        <h1>material-ui</h1>
-        <h2>example project</h2>
+        <h1>T T</h1>
+        <h2>s  nimenenienie </h2>
 
         <RaisedButton label="Super Secret Password" primary={true} onTouchTap={this._handleTouchTap} />
 

@@ -4,14 +4,21 @@ import (
     "fmt"
     "github.com/revel/revel"
     "regexp"
+    "time"
 )
 
 type User struct {
-	Id                  int
+	Id                  int64       `gorm:"primary_key`
 	Name                string
 	Username            string
-    Password            string
+    Password            string      `sql:"-"`
 	HashedPassword      []byte
+
+    TokenWeibo          string      `sql:`
+
+    DateCreated         time.Time   `sql:"DEFAULT:current_timestamp"`
+    DateUpdated         time.Time   `sql:"DEFAULT:current_timestamp"`
+    DateDeleted         time.Time
 }
 
 func (u *User) String() string {
