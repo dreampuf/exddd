@@ -8,6 +8,7 @@ import (
     _ "github.com/mattn/go-sqlite3"
 
     "web/app/models"
+    "fmt"
 )
 
 // type: revel controller with `*gorm.DB`
@@ -31,7 +32,9 @@ func InitDB() {
         r.ERROR.Println("FATAL", err)
         panic( err )
     }
-    Gdb.AutoMigrate(&models.User{})
+    if err := Gdb.AutoMigrate(&models.User{}, &models.Post{}).Error; err != nil {
+        panic(fmt.Sprintf("DB migration err %+v", err))
+    }
     // uniquie index if need
     //Gdb.Model(&models.User{}).AddUniqueIndex("idx_user_name", "name")
 }

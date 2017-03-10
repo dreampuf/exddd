@@ -8,27 +8,29 @@ import (
 )
 
 type User struct {
-	Id                  int64       `gorm:"primary_key`
+	Id                  int64       `gorm:"primary_key"`
 	Name                string
-	Username            string
+	Nickname            string
     Password            string      `sql:"-"`
 	HashedPassword      []byte
 
-    TokenWeibo          string      `sql:`
+	WeiboID				string
+    WeiboToken          string
+	WeiboExpires		time.Time	`sql:"DEFAULT:current_timestamp`
 
     DateCreated         time.Time   `sql:"DEFAULT:current_timestamp"`
     DateUpdated         time.Time   `sql:"DEFAULT:current_timestamp"`
-    DateDeleted         time.Time
+	DateDeleted         time.Time   `sql:"DEFAULT:null"`
 }
 
 func (u *User) String() string {
-	return fmt.Sprintf("User(%s)", u.Username)
+	return fmt.Sprintf("User(%s)", u.Nickname)
 }
 
 var userRegex = regexp.MustCompile("^\\w*$")
 
 func (user *User) Validate(v *revel.Validation) {
-	v.Check(user.Username,
+	v.Check(user.Nickname,
 		revel.Required{},
 		revel.MaxSize{15},
 		revel.MinSize{4},

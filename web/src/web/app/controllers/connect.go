@@ -1,18 +1,21 @@
 package controllers
 
 import (
-    "github.com/revel/revel"
-    "golang.org/x/oauth2"
+    "io"
     "fmt"
-    "web/app/routes"
-    "io/ioutil"
+    "time"
+    "strings"
     "net/url"
     "net/http"
-    "strings"
-    "io"
+    "io/ioutil"
     "encoding/json"
-    "time"
-    //"github.com/Pallinder/go-randomdata"
+
+    "github.com/Pallinder/go-randomdata"
+    "github.com/revel/revel"
+    "golang.org/x/oauth2"
+
+    "web/app/routes"
+    "web/app/models"
 )
 
 
@@ -48,6 +51,14 @@ func (e *expirationTime) UnmarshalJSON(b []byte) error {
     }
     *e = expirationTime(i)
     return nil
+}
+
+type userJSON struct {
+    ProfileURL string           `json:"profile_url"`
+    Domain     string           `json:"domain"`
+    ScreenName string           `json:"screen_name"`
+    Thumbnail  string           `json:"avatar_large"`
+    Gender     string           `json:"gender"`
 }
 
 func rootURL(c Connect, ctrol string) string {
@@ -141,11 +152,69 @@ func (c Connect) WeiboToken() revel.Result {
     profileInfoURL := fmt.Sprintf("https://api.weibo.com/2/users/show.json?uid=%s&access_token=%s", raw.Uid, tok.AccessToken)
     resp, err := client.Get(profileInfoURL)
     if err != nil {
-        revel.ERROR.Println(err)
-    } else {
-        defer resp.Body.Close()
-        body, _ := ioutil.ReadAll(resp.Body)
-        revel.INFO.Println(string(body))
+        revel.WARN.Println(err)
+        return c.Redirect(Connect.Failed)
     }
+
+    defer resp.Body.Close()
+    body, err := ioutil.ReadAll(resp.Body)
+    if err != nil {
+        revel.WARN.Println(err)
+        return c.Redirect(Connect.Failed)
+    }
+    revel.INFO.Println(string(body))
+    userinfo := userJSON{}
+
+    if err := json.Unmarshal(body, &userinfo); err != nil {
+        revel.WARN.Println(err)
+        return c.Redirect(Connect.Failed)
+    }
+
+    gender := randomdata.Female
+    if userinfo.Gender == "m" {
+        gender = randomdata.Male
+    }
+    user := new(models.User)
+    userTmp := new(models.User)
+    c.Txn.Where("weibo_id = (?)", raw.Uid).First(user)
+    if user == nil {
+        revel.INFO.Printf("WeiboID %s didn't exists; Create new one.\n", raw.Uid)
+        var postfix string = ""
+        name := userinfo.ProfileURL
+        if len(userinfo.Domain) > 0 {
+            name = userinfo.Domain
+        }
+        for {
+            if c.Txn.Where("name = ?", name + postfix).Find(userTmp).RecordNotFound() {
+                user.Name = name + postfix
+                break
+            }
+            postfix = randomdata.FirstName(gender)
+        }
+        postfix = ""
+        name = userinfo.ScreenName
+        for {
+            if c.Txn.Where("nickname = ?", name + postfix).Find(userTmp).RecordNotFound() {
+                user.Nickname = name + postfix
+                break
+            }
+            postfix = randomdata.FirstName(gender)
+        }
+        user.WeiboID = raw.Uid
+        user.WeiboToken = tok.AccessToken
+        user.WeiboExpires = tok.Expiry
+
+        if count := c.Txn.Save(user).RowsAffected; count != 1 {
+            revel.WARN.Printf("User %s (Weibo) create failed.\n")
+            return c.Redirect(Connect.Failed)
+        }
+        revel.WARN.Printf("User [%d]%s created", user.Id, user.Name)
+    }
+
+    c.Session["uid"] = string(user.Id)
     return c.Redirect(Connect.Index)
+}
+
+func (c Connect) Failed() revel.Result {
+    return c.Render()
 }

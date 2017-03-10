@@ -10,8 +10,8 @@ GET     /connect                                Connect.Index
 GET     /connect/weibo                          Connect.Weibo
 GET     /connect/weibo/token                    Connect.WeiboToken
 POST    /post/new                               Post.New
-GET     /post/new                               Post.PreNew
 GET     /post/:id                               Post.View
+GET     /post                                   Post.List
 GET     /user/list                              App.UserList
 
 # Ignore favicon requests

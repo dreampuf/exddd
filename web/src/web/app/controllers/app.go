@@ -4,6 +4,7 @@ import (
     "github.com/revel/revel"
     "web/app/models"
     "time"
+    "github.com/Pallinder/go-randomdata"
 )
 
 type App struct {
@@ -28,11 +29,20 @@ func (c App) SavePost(name string, content string) revel.Result {
 }
 
 func (c App) UserList() revel.Result {
-    user := models.User{Name: "Soddy", Username: "Hello", DateCreated: time.Now(), Password: "123"}
+    user := models.User{Name: "Soddy", Nickname: "Hello", DateCreated: time.Now(), Password: "123"}
     c.Txn.NewRecord(user)
     c.Txn.Create(&user)
 
+    for i := 0; i < 10; i ++ {
+        post := models.Post{
+            Title: randomdata.Letters(10),
+            Body:  randomdata.Paragraph(),
+            User:  user,
+        }
+        c.Txn.Create(&post)
+    }
+
     var users = []*models.User{}
     c.Txn.Limit(100).Find(&users)
-    return c.RenderJson(users[0])
+    return c.RenderJson(users)
 }
